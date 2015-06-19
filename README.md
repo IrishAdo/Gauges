@@ -31,5 +31,5 @@ Drawing Gauges with Canvas
 		Guage.register('guage4');
 		Guage.Redraw();
 	&lt;/script>
-	<image src='/IrishAdo/Guages/blob/master/example.png'/>
+	<image src='example.png'/>
 </pre>
