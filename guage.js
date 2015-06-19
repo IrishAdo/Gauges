@@ -144,8 +144,3 @@ var Guage = {
 	}
 
 }
-Guage.register('guage1');
-Guage.register('guage2');
-Guage.register('guage3');
-Guage.register('guage4');
-Guage.Redraw();
