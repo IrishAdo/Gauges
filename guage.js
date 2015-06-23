@@ -1,15 +1,16 @@
 var Guage = {
 	list: [],
+	idCounter:-1,
 	//	since we are not doing a 360 degree graph we will use 270
 	singleDegree: 270 / 100,
 	// register a canvas element as a Guage
-	register: function(id) {
-		var el = document.getElementById(id);
-
-
+	register: function(obj) {
+		var el = obj;// document.getElementById(id);
+		var id = 'Guage'+Guage.idCounter++;
+		el.innerHTML ="<canvas id='"+id+"' width='"+el.getAttribute('width')+"' height='"+el.getAttribute('height')+"'></canvas>";
 		Guage.list[id] = {
 			id: id,
-			canvas: el,
+			canvas: document.getElementById(id),
 			set: [],
 			labels: el.getAttribute('data-labels').split(','),
 			colors: el.getAttribute('data-set-color').split(','),
@@ -111,12 +112,9 @@ var Guage = {
 		var path = new Path2D();
 		ctx.lineWidth = 1.5;
 		ctx.strokeStyle = "rgba(0,0,0,1)";
-		path.arc(125, 125, 100, Guage.DegreeToRadians(135), Guage.DegreeToRadians(
-			45), false); // Outer circle
-		path.arc(125, 125, 50, Guage.DegreeToRadians(45), Guage.DegreeToRadians(135),
-			true); // Outer circle
-		path.arc(125, 125, 100, Guage.DegreeToRadians(135), Guage.DegreeToRadians(
-			135), true); // Outer circle
+		path.arc(125, 125, 100, Guage.DegreeToRadians(135), Guage.DegreeToRadians(45), false); // Outer circle
+		path.arc(125, 125, 50, Guage.DegreeToRadians(45), Guage.DegreeToRadians(135),true); // Outer circle
+		path.arc(125, 125, 100, Guage.DegreeToRadians(135), Guage.DegreeToRadians(135), true); // Outer circle
 		ctx.stroke(path);
 	},
 	DrawNeedle: function(ctx, degrees) {
