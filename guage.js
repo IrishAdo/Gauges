@@ -28,6 +28,7 @@ var Guage = {
 			value: el.getAttribute('data-value') * 1,
 			valuePercent: 0,
 			valueType: el.getAttribute('data-valuetype'),
+			label: el.getAttribute('data-label'),
 			width: el.getAttribute('width').replace('px', '') * 1,
 			height: el.getAttribute('height').replace('px', '') * 1,
 		};
@@ -150,6 +151,8 @@ var Guage = {
 				ctx.font="20px Verdana";
 				ctx.textAlign="center"; 
 				ctx.fillText(Guage.list[id].value+Guage.list[id].valueType, 125,200);
+				ctx.font="15px Verdana";
+				ctx.fillText(Guage.list[id].label, 125,220);
 			},
 			OutlineGuage: function(ctx) {
 				var path = new Path2D();
