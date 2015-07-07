@@ -87,25 +87,31 @@ var Guage = {
 		ctx.strokeStyle = "#000000";
 		ctx.fillStyle = "#000000";
 		ctx.lineWidth = 1;
-
+		
 		for (var index = 0; index < maxIndex; index++) {
 			ctx.save();
+			var angle = Guage.GetDegrees(45+ (Guage.singleDegree * (stepPercentage * index)))
+			var dx = (Math.cos(Guage.DegreeToRadians(angle+90))*(120-index));
+			var dy = (Math.sin(Guage.DegreeToRadians(angle+90))*(120-index));
+			
+			ctx.fillText(Guage.list[id].labels[index], 125+dx,125+dy);
+		
+			// draw tick
 			var path = new Path2D();
 			path.moveTo(0, 90);
 			path.lineTo(0, 100);
 			ctx.translate(125, 125);
-			ctx.rotate(Guage.DegreeToRadians(45 + (Guage.singleDegree * (
-				stepPercentage * index))));
+			ctx.rotate(Guage.DegreeToRadians(angle));
 			ctx.stroke(path);
 			ctx.restore();
 
-			ctx.save();
-			ctx.font = "12px serif";
-			ctx.translate(125, 125);
-			ctx.rotate(Guage.DegreeToRadians(45 + (Guage.singleDegree * stepPercentage *
-				index)));
-			ctx.fillText(Guage.list[id].labels[index], 0, 115);
-			ctx.restore();
+			// ctx.save();
+			// ctx.font = "12px serif";
+			// ctx.translate(125, 125);
+			// ctx.rotate(Guage.DegreeToRadians(45 + (Guage.singleDegree * stepPercentage *
+			// 	index)));
+			// ctx.fillText(Guage.list[id].labels[index], 0, 115);
+			// ctx.restore();
 		}
 	},
 	OutlineGuage: function(ctx) {
@@ -141,9 +147,18 @@ var Guage = {
 
 	DegreeToRadians: function(degrees) {
 		if (degrees > 360) {
-			return Guage.DegreeToRadians(degrees - 360);
+			degrees = Guage.GetDegrees(degrees - 360);
 		}
 		return (Math.PI / 180) * (degrees % 360);
+	},
+	GetDegrees:function (degrees,mod){
+		if(mod == undefined){
+			mod=360;
+		}
+		if (degrees > mod) {
+			return Guage.GetDegrees(degrees - mod,mod);
+		}
+		return degrees;
 	}
 
 }
