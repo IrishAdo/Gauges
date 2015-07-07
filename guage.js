@@ -91,10 +91,10 @@ var Guage = {
 		for (var index = 0; index < maxIndex; index++) {
 			ctx.save();
 			var angle = Guage.GetDegrees(45+ (Guage.singleDegree * (stepPercentage * index)))
-			var dx = (Math.cos(Guage.DegreeToRadians(angle+90))*(120-index));
-			var dy = (Math.sin(Guage.DegreeToRadians(angle+90))*(120-index));
+			var dx = (Math.cos(Guage.DegreeToRadians(angle+90))*120);
+			var dy = (Math.sin(Guage.DegreeToRadians(angle+90))*120);
 			
-			ctx.fillText(Guage.list[id].labels[index], 125+dx,125+dy);
+			ctx.fillText(Guage.list[id].labels[index], 125+dx-(10-index),125+dy+(10-index));
 		
 			// draw tick
 			var path = new Path2D();
