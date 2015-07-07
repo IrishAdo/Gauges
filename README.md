@@ -15,5 +15,5 @@ Drawing Gauges with Canvas
 		}
 		Guage.Redraw();
 	&lt;/script>
-	&lt;image src='example.png'/>
+	<image src='example.png'/>
 </pre>
