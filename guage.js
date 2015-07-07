@@ -27,7 +27,7 @@ var Guage = {
 			max: el.getAttribute('data-max') * 1,
 			value: el.getAttribute('data-value') * 1,
 			valuePercent: 0,
-			valuetype: el.getAttribute('data-valuetype') * 1,
+			valueType: el.getAttribute('data-valuetype'),
 			width: el.getAttribute('width').replace('px', '') * 1,
 			height: el.getAttribute('height').replace('px', '') * 1,
 		};
@@ -132,10 +132,11 @@ var Guage = {
 				for (var index = 0; index < maxIndex; index++) {
 					ctx.save();
 					var angle = Guage.GetDegrees(45+ (Guage.singleDegree * (stepPercentage * index)))
-					var dx = (Math.cos(Guage.DegreeToRadians(angle+90))*120);
-					var dy = (Math.sin(Guage.DegreeToRadians(angle+90))*120);
+					var dx = (Math.cos(Guage.DegreeToRadians(angle+90))*110);
+					var dy = (Math.sin(Guage.DegreeToRadians(angle+90))*110);
 					
-					ctx.fillText(Guage.list[id].labels[index], 125+dx-(10-index),125+dy+(10-index));
+					ctx.textAlign="center"; 
+					ctx.fillText(Guage.list[id].labels[index], 125+dx,125+dy);
 				
 					// draw tick
 					var path = new Path2D();
@@ -145,15 +146,10 @@ var Guage = {
 					ctx.rotate(Guage.DegreeToRadians(angle));
 					ctx.stroke(path);
 					ctx.restore();
-
-					// ctx.save();
-					// ctx.font = "12px serif";
-					// ctx.translate(125, 125);
-					// ctx.rotate(Guage.DegreeToRadians(45 + (Guage.singleDegree * stepPercentage *
-					// 	index)));
-					// ctx.fillText(Guage.list[id].labels[index], 0, 115);
-					// ctx.restore();
 				}
+				ctx.font="20px Verdana";
+				ctx.textAlign="center"; 
+				ctx.fillText(Guage.list[id].value+Guage.list[id].valueType, 125,200);
 			},
 			OutlineGuage: function(ctx) {
 				var path = new Path2D();
@@ -184,7 +180,7 @@ var Guage = {
 				ctx.rotate((Math.PI / 180) * degrees);
 				ctx.fill(path);
 				ctx.restore();
-			},
+			}
 		}
 	}
 }
