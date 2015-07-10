@@ -15,7 +15,7 @@ var Guage = {
 	  return !!(elem.getContext && elem.getContext('2d'));
 	},
 	register: function(obj) {
-		var el = obj;// document.getElementById(id);
+		var el = obj;
 		if (!obj.id) {
 			var id = 'Guage'+Guage.idCounter++;
 		} else {
@@ -52,10 +52,8 @@ var Guage = {
 
 		Guage.list[id].valuePercent = ((Guage.list[id].value / Dx) * 100);
 		for (var index = 0; index < setData.length; index++) {
-			if (setData[index] >= Guage.list[id].min && setData[index] <= Guage.list[
-					id].max) {
-				Guage.list[id].set[Guage.list[id].set.length] = (setData[index] / Dx) *
-					100;
+			if (setData[index] >= Guage.list[id].min && setData[index] <= Guage.list[id].max) {
+				Guage.list[id].set[Guage.list[id].set.length] = (setData[index] / Dx) *	100;
 			}
 		}
 
@@ -206,7 +204,6 @@ var Guage = {
 		},
 		SVG :{
 			Draw: function(id) {
-				var canvas = Guage.list[id].canvas;
 				var buffer ='';
  				buffer += '<rect width="'+Guage.list[id].width+'" height="'+Guage.list[id].height+'" style="fill:rgb(255,255,255);" />';
 				for (var index = 1; index < Guage.list[id].set.length; index++) {
@@ -215,7 +212,10 @@ var Guage = {
 				buffer += Guage.OutlineGuage(null);
 				buffer += Guage.DrawNeedle(null, ((Guage.singleDegree * Guage.list[id].valuePercent)));
 				buffer += Guage.DrawLabelsAndTicks(null, id);
-				canvas.innerHTML = buffer; 
+				buffer ="<svg id='"+Guage.list[id].id+"' width='"+Guage.list[id].parent.getAttribute('width')+"' height='"+Guage.list[id].parent.getAttribute('height')+"'>"+buffer+"</svg>";
+				Guage.list[id].parent.innerHTML =buffer; 
+				console.log(Guage.list[id].canvas.innerHTML)
+				
 			},
 			calcArc:function(startDegrees,endDegrees,radius){
 				return {
@@ -230,7 +230,7 @@ var Guage = {
 				var endDegrees = (135 + (Guage.singleDegree * Guage.list[id].set[index]));
 				var radius =  75;
 				var data = Guage.Factory.SVG.calcArc(startDegrees,endDegrees,radius);
-				return '<path d="M0,0 m'+Math.round(125+data.dx1)+','+Math.round(125+data.dy1)+' a '+radius+','+radius+' 0 0,1 '+(data.dx2-data.dx1)+' '+(data.dy2-data.dy1)+' "  stroke="'+Guage.list[id].colors[index - 1]+'" stroke-width="49" fill="none"/>'
+				return '<path d="M0,0 m'+Math.round(125+data.dx1)+','+Math.round(125+data.dy1)+' a '+radius+','+radius+' 0 0,1 '+(data.dx2-data.dx1)+' '+(data.dy2-data.dy1)+' "  stroke="'+Guage.list[id].colors[index - 1]+'" stroke-width="50" fill="none"></path>'
 			},
 			DrawLabelsAndTicks: function(ctx, id) {
 				var maxIndex = Guage.list[id].labels.length;
@@ -239,13 +239,13 @@ var Guage = {
 
 				for (var index = 0; index < maxIndex; index++) {
 					var angle = Guage.GetDegrees(45+(Guage.singleDegree * (stepPercentage * index)))
-					var dx = (Math.cos(Guage.DegreeToRadians(angle+90))*100);
-					var dy = (Math.sin(Guage.DegreeToRadians(angle+90))*100);
+					var dx = (Math.cos(Guage.DegreeToRadians(angle+90))*110);
+					var dy = (Math.sin(Guage.DegreeToRadians(angle+90))*110);
 					buffer += '<text x="'+(125+dx)+'" y="'+(125+dy)+'" font-family="Verdana" font-size="8" text-anchor="middle">'+Guage.list[id].labels[index]+'</text>';
-					var lx1 = (Math.cos(Guage.DegreeToRadians(angle+90))*90);
-					var ly1 = (Math.sin(Guage.DegreeToRadians(angle+90))*90);
-					var lx2 = (Math.cos(Guage.DegreeToRadians(angle+90))*80);
-					var ly2 = (Math.sin(Guage.DegreeToRadians(angle+90))*80);
+					var lx1 = (Math.cos(Guage.DegreeToRadians(angle+90))*100);
+					var ly1 = (Math.sin(Guage.DegreeToRadians(angle+90))*100);
+					var lx2 = (Math.cos(Guage.DegreeToRadians(angle+90))*90);
+					var ly2 = (Math.sin(Guage.DegreeToRadians(angle+90))*90);
 					buffer +='<line x1="'+(125+lx1)+'" y1="'+(125+ly1)+'" x2="'+(125+lx2)+'" y2="'+(125+ly2)+'" stroke="black" stroke-width="1"/>';
 				}
 				buffer += '<text x="125" y="200" font-family="Verdana" font-size="20" text-anchor="middle">'+Guage.list[id].parent.getAttribute('data-value')+Guage.list[id].valueType+'</text>';
@@ -256,8 +256,8 @@ var Guage = {
 
 				var startDegrees = (135 + (Guage.singleDegree * Guage.list[id].set[0]));
 				var endDegrees = (135 + (Guage.singleDegree * Guage.list[id].set[Guage.list[id].set.length-1]));
-				var radiusInside = 60;
-				var radiusOutSide = 90;
+				var radiusInside = 50;
+				var radiusOutSide = 100;
 				var dataOutside = Guage.Factory.SVG.calcArc(startDegrees,endDegrees,radiusOutSide);
 				var dataInside = Guage.Factory.SVG.calcArc(startDegrees,endDegrees,radiusInside);
 				
@@ -270,7 +270,7 @@ var Guage = {
 				// outside arc
 				buffer += ' M 0,0 m'+Math.round(125+dataOutside.dx1)+','+Math.round(125+dataOutside.dy1)+' a'+radiusOutSide+','+radiusOutSide
 				buffer += ' 0 1,1 '+(dataOutside.dx2-dataOutside.dx1)+' '+(dataOutside.dy2-dataOutside.dy1);
-				buffer += ' "  stroke="black" stroke-width="1.5" fill="none"/>';
+				buffer += ' "  stroke="black" stroke-width="1.5" fill="none"></path>';
 				return buffer;
 			},
 			DrawNeedle: function(ctx, degrees) {
@@ -278,7 +278,7 @@ var Guage = {
 				var data = Guage.Factory.SVG.calcArc(degrees,0,radius);
 				var buffer = '<circle cx="125" cy="125" r="5" style="stroke:#333; fill:#333"/>';
 				buffer += '<path d="M125,120 L50,125 L125,130 z" ';
-				buffer += ' transform="rotate('+(degrees-45)+',125,125)" stroke="#333" stroke-width="1" fill="#333"/>';
+				buffer += ' transform="rotate('+(degrees-45)+',125,125)" stroke="#333" stroke-width="1" fill="#333"></path>';
 				return buffer;
 			}
 		}
